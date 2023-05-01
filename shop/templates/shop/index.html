@@ -101,8 +101,8 @@
         })
 
         console.log('hello ECOMMERCE SHOP')
-                            // localStorage 'cart'
         let cart = {};
+                // localStorage 'cart'
         if(localStorage.getItem('cart') ==null) {
             // JS variable
             cart = {};
@@ -110,22 +110,18 @@
             cart = JSON.parse(localStorage.getItem('cart'));
         }
         $(document).on('click', '.atc', function(e) {
-            // e.preventDefault()
-            console.log('Btn clicked')
-            // console.log(this.id)
+            e.preventDefault()
             let id = this.id.toString();
 
+            // increase except the first time do nothing
             if (cart[id] != undefined) {
-                console.log(cart[id])
                 cart[id] = cart[id] + 1;
-                console.log(cart[id])
             } else {
-                // console.log(cart[id])
+                // Make the first time 1
                 cart[id] = 1;
-                // console.log(cart[id])
             }
             console.log(cart)
-            // localStorage.setItem('cart', JSON.stringify(cart))
+            localStorage.setItem('cart', JSON.stringify(cart))
         });
     </script>
   </body>
