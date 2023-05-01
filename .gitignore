@@ -558,5 +558,3 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-
-/migrations/*
