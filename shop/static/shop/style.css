@@ -7,3 +7,8 @@
     font-weight: bold;
 
 }
+
+.link-info {
+    text-decoration: none;
+    color:red;
+}

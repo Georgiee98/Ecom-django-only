@@ -20,5 +20,6 @@ from shop import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('shop/', views.index, name='shop')
+    path('shop/', views.index, name='shop'),
+    path('shop/<int:pk>', views.detail, name='detail'),
 ]

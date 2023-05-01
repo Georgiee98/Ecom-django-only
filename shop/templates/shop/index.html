@@ -43,19 +43,27 @@
           <ul class="pagination">
             {% if product_objects.has_previous %}
             <li class="page-item">
-              <a  class="page-link"href="?page={{ product_objects.previous_page_number }}"
+              <a
+                class="page-link"
+                href="?page={{ product_objects.previous_page_number }}"
                 >Previous</a
               >
             </li>
             {% endif %}
 
             <li class="page-item active">
-              <a class="page-link" href="?page={{ product_objects.number }}">Cuurent</a>
+              <a class="page-link" href="?page={{ product_objects.number }}"
+                >Cuurent</a
+              >
             </li>
 
             {% if product_objects.has_next %}
             <li>
-              <a class="page-link" href="?page={{ product_objects.next_page_number }}">Next</a>
+              <a
+                class="page-link"
+                href="?page={{ product_objects.next_page_number }}"
+                >Next</a
+              >
             </li>
             {% endif %}
           </ul>
@@ -68,9 +76,16 @@
         {% for product in product_objects %}
         <div class="col-md-3">
           <div class="card">
+            <div class="card-header text-center">{{ product.title }}</div>
             <img src="{{product.image}}" alt="{{product.image}}" />
-            <div class="card-header">{{ product.title }}</div>
-            <div class="card-text">{{ product.price }}</div>
+            <div class="card-body text-center">
+                <div class="card-text text-center">{{ product.price }} CHF</div>
+                <hr />
+                <a href="/shop/{{product.id}}" class="btn btn-lg">Details</a>
+            </div>
+            <a href="/shop/{{product.id}}" class="btn btn-warning"
+              >Add to cart</a
+            >
           </div>
         </div>
         {% endfor %}
