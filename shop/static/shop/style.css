@@ -1,14 +1,9 @@
-.card-title {
-    font-weight: 800;
+.card-header {
+    font-weight: 600;
 }
 
 .card-text {
     color: blue;
     font-weight: bold;
 
-}
-
-.link-info {
-    text-decoration: none;
-    color:red;
 }

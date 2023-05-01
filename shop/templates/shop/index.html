@@ -11,6 +11,8 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
     <!-- <link rel="stylesheet" href="/shop/static/shop/style.css"> -->
     <link rel="stylesheet" href="{% static 'shop/style.css' %}" />
 
@@ -83,7 +85,7 @@
                 <hr />
                 <a href="/shop/{{product.id}}" class="btn btn-lg">Details</a>
             </div>
-            <a href="/shop/{{product.id}}" class="btn btn-warning"
+            <a  id="{{product.id}}" class="atc btn btn-warning"
               >Add to cart</a
             >
           </div>
@@ -92,5 +94,39 @@
       </div>
     </div>
     {% block body %} {% endblock %}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            console.log('hello')
+        })
+
+        console.log('hello ECOMMERCE SHOP')
+                            // localStorage 'cart'
+        let cart = {};
+        if(localStorage.getItem('cart') ==null) {
+            // JS variable
+            cart = {};
+        } else {
+            cart = JSON.parse(localStorage.getItem('cart'));
+        }
+        $(document).on('click', '.atc', function(e) {
+            // e.preventDefault()
+            console.log('Btn clicked')
+            // console.log(this.id)
+            let id = this.id.toString();
+
+            if (cart[id] != undefined) {
+                console.log(cart[id])
+                cart[id] = cart[id] + 1;
+                console.log(cart[id])
+            } else {
+                // console.log(cart[id])
+                cart[id] = 1;
+                // console.log(cart[id])
+            }
+            console.log(cart)
+            // localStorage.setItem('cart', JSON.stringify(cart))
+        });
+    </script>
   </body>
 </html>
