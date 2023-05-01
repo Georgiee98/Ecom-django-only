@@ -12,20 +12,42 @@
       crossorigin="anonymous"
     />
     <!-- <link rel="stylesheet" href="/shop/static/shop/style.css"> -->
-    <link rel="stylesheet" href="{% static 'shop/style.css' %}">
+    <link rel="stylesheet" href="{% static 'shop/style.css' %}" />
 
     <title>E-Commerce Shop</title>
   </head>
   <body>
     <div class="container">
       <div class="row">
+        <div class="col-md-12">
+          <div class="card card-sm">
+            <div class="card-body row no-gytters g-0 align-item-center">
+              <div class="col">
+                <form method="GET">
+                <input
+                  type="search"
+                  name="item_name"
+                  placeholder="Search Products"
+                  class="form-control form-control-plaintext"
+                />
+                </form>
+              </div>
+              <div class="col-auto">
+                <button class="btn btn-success" type="submit">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
         {% for product in product_objects %}
         <div class="col-md-3">
           <div class="card">
-            <img src="{{product.image}}" alt="{{product.image}}">
-            <div class="card-header">
-              {{ product.title }}
-            </div>
+            <img src="{{product.image}}" alt="{{product.image}}" />
+            <div class="card-header">{{ product.title }}</div>
             <div class="card-text">{{ product.price }}</div>
           </div>
         </div>
