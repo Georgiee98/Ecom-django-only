@@ -191,10 +191,7 @@
       } else {
         cart = JSON.parse(localStorage.getItem("cart"));
       }
-      // for (let x in cart) {
-      //   console.log(x +  " x");
-      //   console.log(cart[x] + " cart[x] \n");
-      // }
+
       $(document).on("click", ".atc", function (e) {
         event.preventDefault();
         let quantity = this.id.toString();
@@ -228,7 +225,6 @@
             "|\tQuantity: " + timesBought + "</h6>";
           cartIndex += 1;
           console.log(cartIndex, "totalItems 2");
-        // }
 
         }
 
