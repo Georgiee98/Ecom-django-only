@@ -11,53 +11,85 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
-    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-
-    <!-- <link rel="stylesheet" href="/shop/static/shop/style.css"> -->
     <link rel="stylesheet" href="{% static 'shop/style.css' %}" />
 
     <title>E-Commerce Shop</title>
   </head>
   <body>
     <div class="container">
-
       <div class="row">
         <div class="col-md-12">
-       <nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
-        </li>
-        <li class="nav-item">
-          <a id='cart' class="nav-link cart-storage" href="#">Cart</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown link
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a>
-            asdasdas</li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+          <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Navbar</a>
+              <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#"
+                      >Home</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                  </li>
+                  <li class="nav-item">
+                    <button
+                      id="cart"
+                      data-html="true"
+                      type="button"
+                      class="btn btn-secondary"
+                      data-html="true"
+                      data-container="body"
+                      data-toggle="popover"
+                      data-placement="bottom"
+                      data-content="
+                      This is your Empty Cart with a quantity of 0
+                      You don't have any items in your cart
+                      "
+                    >
+                      Cart(0)
+                    </button>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a
+                      class="nav-link dropdown-toggle"
+                      href="#"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Dropdown link
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" href="#">Action</a> asdasdas
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">Another action</a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#"
+                          >Something else here</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </nav>
         </div>
-
       </div>
 
       <div class="row">
@@ -118,16 +150,16 @@
         {% for product in product_objects %}
         <div class="col-md-3 m-3">
           <div class="card">
-            <div class="card-header text-center">{{ product.title }}</div>
+            <div id="nm{{product.id}}" class="card-header text-center">
+              {{ product.title }}
+            </div>
             <img src="{{product.image}}" alt="{{product.image}}" />
             <div class="card-body text-center">
-                <div class="card-text text-center">{{ product.price }} CHF</div>
-                <hr />
-                <a href="/shop/{{product.id}}" class="btn btn-lg">Details</a>
+              <div class="card-text text-center">{{ product.price }} CHF</div>
+              <hr />
+              <a href="/shop/{{product.id}}" class="btn btn-lg ">Details</a>
             </div>
-            <a  id="{{product.id}}" class="atc btn btn-warning"
-              >Add to cart</a
-            >
+            <a id="{{product.id}}" class="atc btn btn-warning">Add to cart</a>
           </div>
         </div>
         {% endfor %}
@@ -135,33 +167,79 @@
     </div>
     {% block body %} {% endblock %}
 
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
     <script type="text/javascript">
-        let cart = {};
-                // localStorage 'cart'
-        if(localStorage.getItem('cart') ==null) {
-            // JS variable
-            cart = {};
+      let cart = {};
+      // localStorage 'cart'
+      if (localStorage.getItem("cart") == null) {
+        // JS variable
+        cart = {};
+      } else {
+        cart = JSON.parse(localStorage.getItem("cart"));
+      }
+      // for (let x in cart) {
+      //   console.log(x +  " x");
+      //   console.log(cart[x] + " cart[x] \n");
+      // }
+      $(document).on("click", ".atc", function (e) {
+        event.preventDefault();
+        let quantity = this.id.toString();
+        // console.log(quantity + "quantity");
+
+        // increase except the first time do nothing
+        if (cart[quantity] != undefined) {
+          cart[quantity] = cart[quantity] + 1;
+          // console.log(cart[quantity], "cart[quantity] IF");
         } else {
-            cart = JSON.parse(localStorage.getItem('cart'));
+          // Make the first time 1
+          // console.log(cart[quantity], "cart[quantity] ELSE");
+          cart[quantity] = 1;
         }
-        $(document).on('click', '.atc', function(e) {
-            e.preventDefault()
-            let id = this.id.toString();
+        localStorage.setItem("cart", JSON.stringify(cart));
+        document.getElementById("cart").innerHTML =
+          "Cart(" + Object.keys(cart).length + ")";
+        console.log(Object.keys(cart).length);
+      });
 
-            // increase except the first time do nothing
-            if (cart[id] != undefined) {
-                cart[id] = cart[id] + 1;
-            } else {
-                // Make the first time 1
-                cart[id] = 1;
-            }
-            console.log(cart)
-            localStorage.setItem('cart', JSON.stringify(cart))
-            document.getElementById('cart').innerHTML = "Cart("+ Object.keys(cart).length+")"
-            e.preventDefault()
-            console.log(Object.keys(cart).length);
-        });
+      DisplayCart(cart);
+      function DisplayCart(cart) {
+        let cartIndex = 1;
+        let cartString = "<h4>⬇️Your Cart Items⬇️</h4> <br>";
+        console.log(cartString.length)
+        for (let x in cart) {
+          let productName = document.getElementById("nm" + x);
+          let timesBought = cart[x]
+          cartString += "<h6>" + cartIndex + ". "
+            + productName.innerHTML +
+            "|\tQuantity: " + timesBought + "</h6>";
+          cartIndex += 1;
+          console.log(cartIndex, "totalItems 2");
+        // }
 
+        }
+
+        cartString += `<a href='checkout'>
+          <button class='btn btn-warning' id='checkout'>Checkout</button></a>`
+
+        document
+          .getElementById("cart")
+          .setAttribute("data-content", cartString);
+        $('[data-toggle="popover"]').popover();
+      }
     </script>
   </body>
 </html>
