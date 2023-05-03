@@ -11,7 +11,11 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'shop/style.css' %}" />
+    <link rel="stylesheet" href="../../static/shop/style.css" />
 
     <title>E-Commerce Shop</title>
   </head>
@@ -101,7 +105,7 @@
                   type="search"
                   name="item_name"
                   placeholder="Search Products"
-                  class="form-control form-control-plaintext"
+                  class="form-control form-control-plaintext "
                 />
               </div>
               <div class="col-auto">
@@ -191,7 +195,10 @@
       } else {
         cart = JSON.parse(localStorage.getItem("cart"));
       }
-
+      // for (let x in cart) {
+      //   console.log(x +  " x");
+      //   console.log(cart[x] + " cart[x] \n");
+      // }
       $(document).on("click", ".atc", function (e) {
         event.preventDefault();
         let quantity = this.id.toString();
@@ -228,8 +235,15 @@
 
         }
 
+        console.log(cartString.length)
+        if (cartString.length > 33) {
         cartString += `<a href='checkout'>
-          <button class='btn btn-warning' id='checkout'>Checkout</button></a>`
+          <button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`
+
+        }
+        else {
+          cartString = "<h5>Your cart is still empty</h5>"
+        }
 
         document
           .getElementById("cart")
