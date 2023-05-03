@@ -192,62 +192,61 @@
       crossorigin="anonymous"
     ></script>
     <script type="text/javascript">
-      const cartButton = document.getElementById("cart");
-      const addToCartButtons = document.querySelectorAll(".atc");
+      // JQery Begin
+
+      // Retrieve cart from localStorage
       const cart = JSON.parse(localStorage.getItem("cart")) || {};
 
       // Update cart button
+      const cartButton = document.getElementById("cart");
       cartButton.textContent = `Cart(${Object.keys(cart).length})`;
 
-      // Generate HTML string for cart items
-      function generateCartHTML(cart) {
-        const itemsHTML = Object.values(cart)
-          .map(([quantity, name], index) => {
-            return `<h6>${index + 1}. ${name}|\tQuantity: ${quantity}</h6>`;
-          })
-          .join("");
-
-        if (itemsHTML) {
-          return `<h4>⬇️Your Cart Items⬇️</h4><br>${itemsHTML}<a href='checkout'><button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`;
-        } else {
-          return "<h5>Your cart is still empty</h5>";
-        }
-      }
-
-      // Update popover with cart HTML
-      function updateCartPopover() {
-        const cartHTML = generateCartHTML(cart);
-        cartButton.setAttribute("data-content", cartHTML);
-        $('[data-toggle="popover"]').popover();
-      }
-
-      // Refresh cart
+      // Refresh cart function
       function refreshCart() {
-        updateCartPopover();
-        cartButton.textContent = `Cart(${Object.keys(cart).length})`;
+        let cartIndex = 1;
+        let cartString = "<h4>⬇️Your Cart Items⬇️</h4> <br>";
+
+        // Loop through items in cart and add them to the cartString
+        for (const [itemId, [quantity, itemName]] of Object.entries(cart)) {
+          cartString += `<h6>${cartIndex}. ${itemName}|\tQuantity: ${quantity}</h6>`;
+          cartIndex += 1;
+        }
+
+        // Add checkout button if cart has items, else display message
+        if (Object.keys(cart).length > 0) {
+          cartString += `<a href='checkout'><button class='checkouut btn btn-warning g-sm-5' data-toggle='popover' data-content='${cartString}'>Checkout</button></a>`;
+        } else {
+          cartString = "<h5>Your cart is still empty</h5>";
+        }
+
+        // Update popover with new cartString
+        cartButton.dataset.content = cartString;
+        $(cartButton).popover();
       }
 
-      // Add event listener to "Add to Cart" buttons
-      addToCartButtons.forEach((button) => {
-        button.addEventListener("click", (event) => {
-          event.preventDefault();
-          const itemId = button.id.toString();
+      // Cache item name elements
+      const itemNameElements = {};
+      $(document).on("click", ".atc", function (e) {
+        e.preventDefault();
+        const itemId = this.id.toString();
 
-          // If item is already in cart, increment quantity, else add item to cart
-          if (cart[itemId]) {
-            cart[itemId][0]++;
-          } else {
-            const name = document.getElementById("nm" + itemId).innerHTML;
-            cart[itemId] = [1, name];
-          }
+        // If item is already in cart, increment quantity, else add item to cart
+        if (cart[itemId]) {
+          cart[itemId][0] += 1;
+        } else {
+          const nameElement = document.getElementById(`nm${itemId}`);
+          const itemName = nameElement.textContent;
+          itemNameElements[itemId] = nameElement; // Cache element
+          cart[itemId] = [1, itemName];
+        }
 
-          // Update localStorage and refresh cart
-          localStorage.setItem("cart", JSON.stringify(cart));
-          refreshCart();
-        });
+        // Update localStorage and refresh cart
+        localStorage.setItem("cart", JSON.stringify(cart));
+        refreshCart();
+        cartButton.textContent = `Cart(${Object.keys(cart).length})`;
       });
 
-      // Call refreshCart on page load
+      // Call refreshCart on page load and after each item is added to the cart
       refreshCart();
 
       // JQuery code finished
