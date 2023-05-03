@@ -157,7 +157,9 @@
         {% for product in product_objects %}
         <div class="col-md-3 m-3">
           <div class="card">
-            <div id="nm{{product.id}}" class="card-header text-center">{{ product.title }}</div>
+            <div id="nm{{product.id}}" class="card-header text-center">
+              {{ product.title }}
+            </div>
             <img src="{{product.image}}" alt="{{product.image}}" />
             <div class="card-body text-center">
               <div class="card-text text-center">{{ product.price }} CHF</div>
@@ -190,72 +192,54 @@
       crossorigin="anonymous"
     ></script>
     <script type="text/javascript">
-      // Retrieve cart from localStorage
-      let cart = {};
-      if (localStorage.getItem("cart") != null) {
-        cart = JSON.parse(localStorage.getItem("cart"));
-      }
+      $(document).ready(function () {
+        // Retrieve cart from localStorage
+        let cart = JSON.parse(localStorage.getItem("cart")) || {};
 
-      // Update cart button
-      document.getElementById("cart").innerHTML =
-        "Cart(" + Object.keys(cart).length + ")";
+        // Update cart button
+        const cartButton = document.getElementById("cart");
+        cartButton.innerHTML = `Cart(${Object.keys(cart).length})`;
 
-      // Refresh cart function
-      function refreshCart() {
-        let cartIndex = 1;
-        let cartString = "<h4>⬇️Your Cart Items⬇️</h4> <br>";
+        // Refresh cart function
+        function refreshCart() {
+          const cartString = Object.entries(cart).reduce(
+            (acc, [id, [count, name]], index) => {
+              return acc + `<h6>${index + 1}. ${name}| Quantity: ${count}</h6>`;
+            },
+            "<h4>⬇️Your Cart Items⬇️</h4><br>"
+          );
 
-        // Loop through items in cart and add them to the cartString
-        for (let x in cart) {
-          let productName = cart[x][1];
-          let timesBought = cart[x][0];
-          cartString +=
-            "<h6>" +
-            cartIndex +
-            ". " +
-            productName +
-            "|\tQuantity: " +
-            timesBought +
-            "</h6>";
-          cartIndex += 1;
+          // Add checkout button if cart has items, else display message
+          const checkoutButton = `<a href="checkout"><button class="checkouut btn btn-warning g-sm-5" id="checkout">Checkout</button></a>`;
+          const cartStringWithButton =
+            cartString.length > 33
+              ? cartString + checkoutButton
+              : "<h5>Your cart is still empty</h5>";
+
+          // Update popover with new cartString
+          cartButton.setAttribute("data-content", cartStringWithButton);
+          $('[data-toggle="popover"]').popover();
         }
 
-        // Add checkout button if cart has items, else display message
-        if (cartString.length > 33) {
-          cartString += `<a href='checkout'>
-      <button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`;
-        } else {
-          cartString = "<h5>Your cart is still empty</h5>";
-        }
-
-        // Update popover with new cartString
-        document
-          .getElementById("cart")
-          .setAttribute("data-content", cartString);
-        $('[data-toggle="popover"]').popover();
-      }
-
-      // Call refreshCart on page load and after each item is added to the cart
-      refreshCart();
-      $(document).on("click", ".atc", function (e) {
-        event.preventDefault();
-        let item_id = this.id.toString();
-
-        // If item is already in cart, increment quantity, else add item to cart
-        if (cart[item_id] != undefined) {
-          quantity = cart[item_id][0] + 1;
-          cart[item_id][0] = quantity;
-        } else {
-          quantity = 1;
-          name = document.getElementById("nm" + item_id).innerHTML;
-          cart[item_id] = [quantity, name];
-        }
-
-        // Update localStorage and refresh cart
-        localStorage.setItem("cart", JSON.stringify(cart));
+        // Call refreshCart on page load and after each item is added to the cart
         refreshCart();
-        document.getElementById("cart").innerHTML =
-          "Cart(" + Object.keys(cart).length + ")";
+        $(document).on("click", ".atc", function (e) {
+          event.preventDefault();
+          const itemId = this.id.toString();
+
+          // If item is already in cart, increment quantity, else add item to cart
+          if (cart[itemId]) {
+            cart[itemId][0]++;
+          } else {
+            const name = document.getElementById("nm" + itemId).innerHTML;
+            cart[itemId] = [1, name];
+          }
+
+          // Update localStorage and refresh cart
+          localStorage.setItem("cart", JSON.stringify(cart));
+          refreshCart();
+          cartButton.innerHTML = `Cart(${Object.keys(cart).length})`;
+        });
       });
     </script>
   </body>
