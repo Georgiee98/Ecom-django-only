@@ -32,6 +32,8 @@
         <div class="row">
           <div class="col-md-12">
             <form method="POST"  class="row g-3">
+                <!-- Cross Site Request Forgery (CSRF) -->
+                {% csrf_token %}
               <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">Name</label>
                 <input
