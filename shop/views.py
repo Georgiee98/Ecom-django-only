@@ -34,13 +34,13 @@ def checkout(request):
         state = request.POST.get('state', "")
         zip = request.POST.get('zip', "")
 
-    order = Order(
-        name = name,
-        email = email,
-        adress = adress,
-        city = city,
-        state = state,
-        zip_code = zip,
-    )
-    order.save()
+        order = Order(
+            name = name,
+            email = email,
+            adress = adress,
+            city = city,
+            state = state,
+            zip_code = zip,
+        )
+        order.save()
     return render(request, 'shop/checkout.html')
