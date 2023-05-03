@@ -27,6 +27,7 @@ def detail(request, pk):
 def checkout(request):
 
     if request.method == "POST":
+        items = request.POST.get('items', "")
         name = request.POST.get('name', "")
         email = request.POST.get('email', "")
         adress = request.POST.get('adress', "")
@@ -35,6 +36,7 @@ def checkout(request):
         zip = request.POST.get('zip', "")
 
         order = Order(
+            items = items,
             name = name,
             email = email,
             adress = adress,
