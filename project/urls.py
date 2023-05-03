@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('shop/', views.index, name='shop'),
     path('shop/<int:pk>', views.detail, name='detail'),
+    path('shop/checkout', views.checkout, name='checkout'),
 ]
