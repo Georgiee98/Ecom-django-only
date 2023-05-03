@@ -154,16 +154,14 @@
         {% for product in product_objects %}
         <div class="col-md-3 m-3">
           <div class="card">
-            <div id="nm{{product.id}}" class="card-header text-center">
-              {{ product.title }}
-            </div>
+            <div id="nm{{product.id}}" class="card-header text-center">{{ product.title }}</div>
             <img src="{{product.image}}" alt="{{product.image}}" />
             <div class="card-body text-center">
               <div class="card-text text-center">{{ product.price }} CHF</div>
               <hr />
               <a href="/shop/{{product.id}}" class="btn btn-lg ">Details</a>
             </div>
-            <a id="{{product.id}}" class="atc btn btn-warning">Add to cart</a>
+           <button class="atc btn btn-warning" id="{{product.id}}" onclick="DisplayCart(cart)">Add to cart</button>
           </div>
         </div>
         {% endfor %}
@@ -201,41 +199,41 @@
       // }
       $(document).on("click", ".atc", function (e) {
         event.preventDefault();
-        let quantity = this.id.toString();
-        // console.log(quantity + "quantity");
+        let item_id = this.id.toString();
+        // console.log(item_id + "item_id");
 
         // increase except the first time do nothing
-        if (cart[quantity] != undefined) {
-          cart[quantity] = cart[quantity] + 1;
-          // console.log(cart[quantity], "cart[quantity] IF");
+        if (cart[item_id] != undefined) {
+          quantity = cart[item_id][0] + 1;
+          // console.log(quantity)
+          cart[item_id][0] = quantity
+          // console.log(quantity)
+
+          // console.log(cart[cart_id], "cart[cart_id] IF");
         } else {
           // Make the first time 1
-          // console.log(cart[quantity], "cart[quantity] ELSE");
-          cart[quantity] = 1;
+          // console.log(cart[cart_id], "cart[cart_id] ELSE");
+          quantity = 1;
+          name = document.getElementById("nm"+item_id).innerHTML;
+          cart[item_id] = [quantity, name]
         }
         localStorage.setItem("cart", JSON.stringify(cart));
         document.getElementById("cart").innerHTML =
           "Cart(" + Object.keys(cart).length + ")";
-        console.log(Object.keys(cart).length);
       });
 
       DisplayCart(cart);
       function DisplayCart(cart) {
         let cartIndex = 1;
         let cartString = "<h4>⬇️Your Cart Items⬇️</h4> <br>";
-        console.log(cartString.length)
         for (let x in cart) {
           let productName = document.getElementById("nm" + x);
-          let timesBought = cart[x]
-          cartString += "<h6>" + cartIndex + ". "
-            + productName.innerHTML +
-            "|\tQuantity: " + timesBought + "</h6>";
+          let timesBought = cart[x][0]
+          cartString += "<h6>" + cartIndex + ". " + productName.innerHTML + "|\tQuantity: " + timesBought + "</h6>";
           cartIndex += 1;
-          console.log(cartIndex, "totalItems 2");
 
         }
 
-        console.log(cartString.length)
         if (cartString.length > 33) {
         cartString += `<a href='checkout'>
           <button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`
