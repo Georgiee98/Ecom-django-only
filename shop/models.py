@@ -24,4 +24,4 @@ class Order(models.Model):
     zip_code = models.CharField(max_length=255)
     ordered = models.BooleanField(default=False)
     def __str__(self):
-    return f"ID: {self.id} | {self.name} |"
+        return f"ID: {self.id} | {self.name} |"
