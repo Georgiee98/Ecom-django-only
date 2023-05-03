@@ -11,9 +11,12 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="{% static 'shop/style.css' %}" />
     <link rel="stylesheet" href="../../static/shop/style.css" />
 
@@ -105,7 +108,7 @@
                   type="search"
                   name="item_name"
                   placeholder="Search Products"
-                  class="form-control form-control-plaintext "
+                  class="form-control form-control-plaintext"
                 />
               </div>
               <div class="col-auto">
@@ -159,9 +162,11 @@
             <div class="card-body text-center">
               <div class="card-text text-center">{{ product.price }} CHF</div>
               <hr />
-              <a href="/shop/{{product.id}}" class="btn btn-lg ">Details</a>
+              <a href="/shop/{{product.id}}" class="btn btn-lg">Details</a>
             </div>
-           <button class="atc btn btn-warning" id="{{product.id}}" onclick="DisplayCart(cart)">Add to cart</button>
+            <button class="atc btn btn-warning" id="{{product.id}}">
+              Add to cart
+            </button>
           </div>
         </div>
         {% endfor %}
@@ -185,69 +190,73 @@
       crossorigin="anonymous"
     ></script>
     <script type="text/javascript">
+      // Retrieve cart from localStorage
       let cart = {};
-      // localStorage 'cart'
-      if (localStorage.getItem("cart") == null) {
-        // JS variable
-        cart = {};
-      } else {
+      if (localStorage.getItem("cart") != null) {
         cart = JSON.parse(localStorage.getItem("cart"));
       }
-      // for (let x in cart) {
-      //   console.log(x +  " x");
-      //   console.log(cart[x] + " cart[x] \n");
-      // }
-      $(document).on("click", ".atc", function (e) {
-        event.preventDefault();
-        let item_id = this.id.toString();
-        // console.log(item_id + "item_id");
 
-        // increase except the first time do nothing
-        if (cart[item_id] != undefined) {
-          quantity = cart[item_id][0] + 1;
-          // console.log(quantity)
-          cart[item_id][0] = quantity
-          // console.log(quantity)
+      // Update cart button
+      document.getElementById("cart").innerHTML =
+        "Cart(" + Object.keys(cart).length + ")";
 
-          // console.log(cart[cart_id], "cart[cart_id] IF");
-        } else {
-          // Make the first time 1
-          // console.log(cart[cart_id], "cart[cart_id] ELSE");
-          quantity = 1;
-          name = document.getElementById("nm"+item_id).innerHTML;
-          cart[item_id] = [quantity, name]
-        }
-        localStorage.setItem("cart", JSON.stringify(cart));
-        document.getElementById("cart").innerHTML =
-          "Cart(" + Object.keys(cart).length + ")";
-      });
-
-      DisplayCart(cart);
-      function DisplayCart(cart) {
+      // Refresh cart function
+      function refreshCart() {
         let cartIndex = 1;
         let cartString = "<h4>⬇️Your Cart Items⬇️</h4> <br>";
+
+        // Loop through items in cart and add them to the cartString
         for (let x in cart) {
-          let productName = document.getElementById("nm" + x);
-          let timesBought = cart[x][0]
-          cartString += "<h6>" + cartIndex + ". " + productName.innerHTML + "|\tQuantity: " + timesBought + "</h6>";
+          let productName = cart[x][1];
+          let timesBought = cart[x][0];
+          cartString +=
+            "<h6>" +
+            cartIndex +
+            ". " +
+            productName +
+            "|\tQuantity: " +
+            timesBought +
+            "</h6>";
           cartIndex += 1;
-
         }
 
+        // Add checkout button if cart has items, else display message
         if (cartString.length > 33) {
-        cartString += `<a href='checkout'>
-          <button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`
-
-        }
-        else {
-          cartString = "<h5>Your cart is still empty</h5>"
+          cartString += `<a href='checkout'>
+      <button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`;
+        } else {
+          cartString = "<h5>Your cart is still empty</h5>";
         }
 
+        // Update popover with new cartString
         document
           .getElementById("cart")
           .setAttribute("data-content", cartString);
         $('[data-toggle="popover"]').popover();
       }
+
+      // Call refreshCart on page load and after each item is added to the cart
+      refreshCart();
+      $(document).on("click", ".atc", function (e) {
+        event.preventDefault();
+        let item_id = this.id.toString();
+
+        // If item is already in cart, increment quantity, else add item to cart
+        if (cart[item_id] != undefined) {
+          quantity = cart[item_id][0] + 1;
+          cart[item_id][0] = quantity;
+        } else {
+          quantity = 1;
+          name = document.getElementById("nm" + item_id).innerHTML;
+          cart[item_id] = [quantity, name];
+        }
+
+        // Update localStorage and refresh cart
+        localStorage.setItem("cart", JSON.stringify(cart));
+        refreshCart();
+        document.getElementById("cart").innerHTML =
+          "Cart(" + Object.keys(cart).length + ")";
+      });
     </script>
   </body>
 </html>
