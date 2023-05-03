@@ -192,79 +192,64 @@
       crossorigin="anonymous"
     ></script>
     <script type="text/javascript">
-      // JQuery Code
-
-      // Retrieve cart from localStorage
-      let cart = {};
-      if (localStorage.getItem("cart") != null) {
-        cart = JSON.parse(localStorage.getItem("cart"));
-      }
+      const cartButton = document.getElementById("cart");
+      const addToCartButtons = document.querySelectorAll(".atc");
+      const cart = JSON.parse(localStorage.getItem("cart")) || {};
 
       // Update cart button
-      document.getElementById("cart").innerHTML =
-        "Cart(" + Object.keys(cart).length + ")";
+      cartButton.textContent = `Cart(${Object.keys(cart).length})`;
 
-      // Refresh cart function
-      function refreshCart() {
-        let cartIndex = 1;
-        let cartString = "<h4>⬇️Your Cart Items⬇️</h4> <br>";
+      // Generate HTML string for cart items
+      function generateCartHTML(cart) {
+        const itemsHTML = Object.values(cart)
+          .map(([quantity, name], index) => {
+            return `<h6>${index + 1}. ${name}|\tQuantity: ${quantity}</h6>`;
+          })
+          .join("");
 
-        // Loop through items in cart and add them to the cartString
-        for (let x in cart) {
-          let productName = cart[x][1];
-          let timesBought = cart[x][0];
-          cartString +=
-            "<h6>" +
-            cartIndex +
-            ". " +
-            productName +
-            "|\tQuantity: " +
-            timesBought +
-            "</h6>";
-          cartIndex += 1;
-        }
-
-        // Add checkout button if cart has items, else display message
-        if (cartString.length > 33) {
-          cartString += `<a href='checkout'>
-  <button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`;
+        if (itemsHTML) {
+          return `<h4>⬇️Your Cart Items⬇️</h4><br>${itemsHTML}<a href='checkout'><button class='checkouut btn btn-warning g-sm-5' id='checkout'>Checkout</button></a>`;
         } else {
-          cartString = "<h5>Your cart is still empty</h5>";
+          return "<h5>Your cart is still empty</h5>";
         }
+      }
 
-        // Update popover with new cartString
-        document
-          .getElementById("cart")
-          .setAttribute("data-content", cartString);
+      // Update popover with cart HTML
+      function updateCartPopover() {
+        const cartHTML = generateCartHTML(cart);
+        cartButton.setAttribute("data-content", cartHTML);
         $('[data-toggle="popover"]').popover();
       }
 
-      // Call refreshCart on page load
-      refreshCart();
+      // Refresh cart
+      function refreshCart() {
+        updateCartPopover();
+        cartButton.textContent = `Cart(${Object.keys(cart).length})`;
+      }
 
-      // Add event listener for "Add to Cart" buttons
-      document.addEventListener("click", function (event) {
-        if (event.target.classList.contains("atc")) {
+      // Add event listener to "Add to Cart" buttons
+      addToCartButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
           event.preventDefault();
-          let item_id = event.target.id.toString();
+          const itemId = button.id.toString();
 
           // If item is already in cart, increment quantity, else add item to cart
-          if (cart[item_id] != undefined) {
-            quantity = cart[item_id][0] + 1;
-            cart[item_id][0] = quantity;
+          if (cart[itemId]) {
+            cart[itemId][0]++;
           } else {
-            quantity = 1;
-            name = document.getElementById("nm" + item_id).innerHTML;
-            cart[item_id] = [quantity, name];
+            const name = document.getElementById("nm" + itemId).innerHTML;
+            cart[itemId] = [1, name];
           }
 
           // Update localStorage and refresh cart
           localStorage.setItem("cart", JSON.stringify(cart));
           refreshCart();
-          document.getElementById("cart").innerHTML =
-            "Cart(" + Object.keys(cart).length + ")";
-        }
+        });
       });
+
+      // Call refreshCart on page load
+      refreshCart();
+
       // JQuery code finished
     </script>
   </body>
