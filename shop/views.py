@@ -25,4 +25,12 @@ def detail(request, pk):
 
 
 def checkout(request):
+
+    if request.method == "POST":
+        name = request.POST.get('name', "")
+        email = request.POST.get('email', "")
+        adress = request.POST.get('adress', "")
+        city = request.POST.get('city', "")
+        state = request.POST.get('state', "")
+        zip = request.POST.get('zip', "")
     return render(request, 'shop/checkout.html')
