@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Product
+from .models import Product, Order
 
 from django.core.paginator import Paginator
 
@@ -33,4 +33,14 @@ def checkout(request):
         city = request.POST.get('city', "")
         state = request.POST.get('state', "")
         zip = request.POST.get('zip', "")
+
+    order = Order(
+        name = name,
+        email = email,
+        adress = adress,
+        city = city,
+        state = state,
+        zip_code = zip,
+    )
+    order.save()
     return render(request, 'shop/checkout.html')
