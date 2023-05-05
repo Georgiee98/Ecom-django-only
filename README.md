@@ -1,13 +1,15 @@
-## Dummy E-commerce
+# Dummy E-commerce
 
-# Technologies
+## Technologies
 -   Django
 -   JQuery
 -   Bootstrap
 
-# Usage
-source activate/Script/activate (UNIX)
-source activate/Script/activate.bat (Windows)
+## Usage
+-   source activate/Script/activate (UNIX)
+-   source activate/Script/activate.bat (Windows)
+## Interpreter
 -   Configure your Python Interpreter to ecom-django
--   #   ecom-django (pip environment)
-python manage.py runserver
+-   ecom-django (pip environment)
+### Start
+-   python manage.py runserver
