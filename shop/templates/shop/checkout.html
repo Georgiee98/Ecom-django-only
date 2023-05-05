@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,6 +19,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../static/shop/style.css" />
+    <link rel="stylesheet" href="../../static/shop/style.css">
+    <link rel="stylesheet" href="{% static './shop/style.css' %}">
   </head>
   <body>
     {% block body %}
@@ -39,7 +42,7 @@
                   id="name"
                   name="name"
                   type="text"
-                  class="form-control"
+                  class="form-control "
                   id="inputEmail4"
                   placeholder="John"
                 />
@@ -134,8 +137,19 @@
       for (item in cart) {
         let name = cart[item][1];
         let quantity = cart[item][0];
+        let price = cart[item][2];
 
-        itemString += `<li class="list-group-item">${name}-${quantity}</li>`;
+        itemString += `<li class="list-group-item">
+  <div class="row align-items-center">
+    <div class="col-4">${name}</div>
+    <div class="col-3 text-center">${quantity}</div>
+    <div class="col-4 text-end">
+      <span class="badge bg-danger">${price}</span>
+    </div>
+  </div>
+</li>
+
+`;
       }
       $("#item_list").append(itemString);
 
