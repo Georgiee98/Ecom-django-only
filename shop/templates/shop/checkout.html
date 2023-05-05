@@ -28,7 +28,9 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <ol class="list-group list-group-numbered" id="item_list"></ol>
+          <ol class="list-group list-group-numbered" id="item_list">
+
+          </ol>
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -133,11 +135,12 @@
     <script type="text/javascript">
       let cart = JSON.parse(localStorage.getItem("cart")) || {};
       let itemString = ``;
-
+      let total = 0
       for (item in cart) {
         let name = cart[item][1];
         let quantity = cart[item][0];
         let price = cart[item][2];
+        total += cart[item][2]
 
         itemString += `<li class="list-group-item">
   <div class="row align-items-center">
@@ -150,11 +153,15 @@
 </li>
 
 `;
-      }
-      $("#item_list").append(itemString);
+}
+$("#item_list").append(itemString);
+totalPrice = `<li style="list-style-type: none; margin: 0; padding: 0;" class="list-group-item d-flex justify-content-around align-items-center"><b>Your total</b>
+  ${total}</li>`
 
-      let items = $("#items").val(JSON.stringify(cart));
-      console.log(items)
+$('#total').val(total);
+$('#item_list').append(totalPrice);
+$('#item_list').css('list-style-type', 'none');
+$('#items').val(JSON.stringify(cart));
     </script>
   </body>
 </html>
